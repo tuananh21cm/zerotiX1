@@ -1,0 +1,23 @@
+{
+    "name": "precare-models",
+    "version": "0.1.0",
+    "description": "Models definition and model validation logic",
+    "main": "index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Draphony",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git@ssh.dev.azure.com:v3/DraphonyConsulting/PRE%20CARE/api"
+    },
+    "publishConfig": {
+        "registry": "https://pkgs.dev.azure.com/DraphonyConsulting/_packaging/DraphonyConsulting/npm/registry/"
+    },
+    "dependencies": {
+        "@types/uuid": "^8.3.0",
+        "uuid": "^8.3.2"
+    }
+}

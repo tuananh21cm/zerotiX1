@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/src",
+        "module": "commonjs",
+        "target": "ES2017",
+        "lib": [
+            "dom",
+            "ES2018"
+        ],
+        "strict": true,
+        "alwaysStrict": true,
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "strictNullChecks": false,
+    },
+    "compileOnSave": true,
+    "include":["./src/**/*"],
+    "exclude": [
+        "./plugins/**/*",
+        "./typings/**/*",
+        "./dist/**/*" ,
+        "node_modules"
+    ]
+}

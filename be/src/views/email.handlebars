@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>report check index and status</title>
+</head>
+<body>
+    {{#if listData.length}}
+        <table class="table" width="1000px">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">CompanyName</th>
+                    <th scope="col">url redirect</th>
+                    <th scope="col">provided url</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each listData}}
+                    <tr class="table-warning">
+                        <th scope="row">{{@index}}</th>
+                        <td>draphony.de</td>
+                        <td>{{this.indexRedirect}}</td>
+                        <td>{{this.indexProvided}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <p>Not found</p>
+    {{/if}}
+</body>
+</html>

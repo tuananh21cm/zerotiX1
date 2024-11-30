@@ -1,0 +1,307 @@
+[
+    {
+        "father": "Womenswear & Underwear",
+        "child": [
+          "Women's Tops",
+          "Women's Bottoms",
+          "Women's Dresses",
+          "Women's Special Clothing",
+          "Women's Suits & Sets",
+          "Women's Underwear",
+          "Women's Sleepwear & Loungewear"
+        ]
+      },
+      {
+        "father": "Menswear & Underwear",
+        "child": [
+          "Men's Tops",
+          "Men's Bottoms",
+          "Men's Special Occasion Clothing",
+          "Men's Underwear & Socks",
+          "Men's Sleepwear & Loungewear",
+          "Men's Suits & Sets"
+        ]
+      },
+      {
+        "father": "Sports & Outdoor",
+        "child": [
+          "Sport & Outdoor Clothing",
+          "Sports Footwear",
+          "Sports & Outdoor Accessories",
+          "Ball Sports",
+          "Water Sports",
+          "Winter Sports",
+          "Fitness",
+          "Camping & Hiking",
+          "Leisure & Outdoor Recreation Equipment",
+          "Swimwear, Surfwear & Wetsuits",
+          "Fan Shop",
+          "Lawn Games"
+        ]
+      },
+    {
+      "father": "Home Supplies",
+      "child": [
+        "Home Organizers",
+        "Bathroom Supplies",
+        "Home Decor",
+        "Home Care Supplies",
+        "Laundry Tools & Accessories",
+        "Festive & Party Supplies",
+        "Miscellaneous Home"
+      ]
+    },
+    {
+      "father": "Kitchenware",
+      "child": [
+        "Tea & Coffeeware",
+        "Kitchen Knives",
+        "Barbecue",
+        "Bar & Wine Utensils",
+        "Bakeware",
+        "Cookware",
+        "Cutlery & Tableware",
+        "Drinkware",
+        "Kitchen Utensils & Gadgets"
+      ]
+    },
+    {
+      "father": "Textiles & Soft Furnishings",
+      "child": [
+        "Bedding and Linens",
+        "Household Textiles",
+        "Fabrics & Sewing Supplies"
+      ]
+    },
+    {
+      "father": "Household Appliances",
+      "child": [
+        "Kitchen Appliances",
+        "Home Appliances",
+        "Large Home Appliances",
+        "Commercial Appliances"
+      ]
+    },
+
+    {
+      "father": "Muslim Fashion",
+      "child": [
+        "Hijabs",
+        "Women's Islamic Clothing",
+        "Men's Islamic Clothing",
+        "Outerwear",
+        "Islamic Accessories",
+        "Prayer Attire & Equipment",
+        "Islamic Sportswear",
+        "Umroh Equipment"
+      ]
+    },
+    {
+      "father": "Shoes",
+      "child": [
+        "Women's Shoes",
+        "Men's Shoes",
+        "Shoe Accessories"
+      ]
+    },
+    {
+      "father": "Beauty & Personal Care",
+      "child": [
+        "Makeup",
+        "Skincare",
+        "Haircare & Styling",
+        "Hand, Foot & Nail Care",
+        "Bath & Body Care",
+        "Men's Care",
+        "Personal Care Appliances",
+        "Eye & Ear Care",
+        "Nasal & Oral Care",
+        "Special Personal Care"
+      ]
+    },
+    {
+      "father": "Phones & Electronics",
+      "child": [
+        "Mobile Phone Accessories",
+        "Cameras & Photography",
+        "Audio & Video",
+        "Gaming & Consoles",
+        "Smart & Wearable Devices",
+        "Tablet & Computer Accessories"
+      ]
+    },
+    {
+      "father": "Computers & Office Equipment",
+      "child": [
+        "Desktop Computers, Laptops & Tablets",
+        "Desktop & Laptop Components",
+        "Computer Accessories",
+        "Data Storage & Software",
+        "Network Components",
+        "Office Equipment",
+        "Office Stationery & Supplies"
+      ]
+    },
+    {
+      "father": "Pet Supplies",
+      "child": [
+        "Dog & Cat Food",
+        "Dog & Cat Furniture",
+        "Dog & Cat Clothing",
+        "Dog & Cat Litter",
+        "Dog & Cat Grooming",
+        "Dog & Cat Healthcare",
+        "Dog & Cat Accessories",
+        "Fish & Aquatic Supplies",
+        "Reptile & Amphibian Supplies",
+        "Bird Supplies",
+        "Small Animal Supplies",
+        "Farm Animal & Poultry Supplies"
+      ]
+    },
+    {
+      "father": "Baby & Maternity",
+      "child": [
+        "Baby Clothing & Shoes",
+        "Nursing & Feeding",
+        "Baby Care & Health",
+        "Maternity Supplies",
+        "Baby Fashion Accessories"
+      ]
+    },
+   
+    {
+      "father": "Toys & Hobbies",
+      "child": [
+        "Educational Toys",
+        "Games & Puzzles",
+        "Classic & Novelty Toys",
+        "Musical Instruments & Accessories",
+        "DIY"
+      ]
+    },
+    {
+      "father": "Furniture",
+      "child": [
+        "Indoor Furniture",
+        "Outdoor Furniture",
+        "Commercial Furniture"
+      ]
+    },
+    {
+      "father": "Tools & Hardware",
+      "child": [
+        "Power Tools",
+        "Hand Tools",
+        "Measuring Tools",
+        "Garden Tools",
+        "Soldering Equipment",
+        "Tool Organizers",
+        "Hardware",
+        "Pumps & Plumbing"
+      ]
+    },
+    {
+      "father": "Home Improvement",
+      "child": [
+        "Solar & Wind Power",
+        "Lights & Lighting",
+        "Electrical Equipment & Supplies",
+        "Kitchen Fixtures",
+        "Building Supplies",
+        "Bathroom Fixtures",
+        "Security & Safety",
+        "Garden Supplies"
+      ]
+    },
+    {
+      "father": "Automotive & Motorcycle",
+      "child": [
+        "Car Electronics",
+        "Car Exterior Accessories",
+        "Car Interior Accessories",
+        "Car Repair Tools",
+        "Car Lights",
+        "Quads, Motorhomes & Boats",
+        "Car Washing & Maintenance",
+        "Motorcycle Accessories"
+      ]
+    },
+    {
+      "father": "Fashion Accessories",
+      "child": [
+        "Hair Extensions & Wigs",
+        "Dressmaking Fabrics",
+        "Wedding Accessories",
+        "Clothes Accessories",
+        "Eyewear",
+        "Fashion Watches & Accessories",
+        "Costume Jewelry & Accessories",
+        "Hair Accessories"
+      ]
+    },
+    {
+      "father": "Health",
+      "child": [
+        "Humanities & Social Sciences",
+        "Magazines & Newspapers",
+        "Literature & Art",
+        "Economics & Management",
+        "Children's & Infants' Books",
+        "Science & Technology",
+        "Lifestyle & Hobbies",
+        "Education & Schooling",
+        "Video & Music"
+      ]
+    },
+    {
+      "father": "Books, Magazines & Audio",
+      "child": [
+        "Nutrition & Wellness",
+        "Medical Supplies",
+        "Alternative Medications & Treatments"
+      ]
+    },
+    {
+      "father": "Kids' Fashion",
+      "child": [
+        "Boys' Clothes",
+        "Girls' Clothes"
+      ]
+    },
+   
+    {
+      "father": "Luggage & Bags",
+      "child": [
+        "Women's Bags",
+        "Men's Bags",
+        "Luggage & Travel Bags",
+        "Functional Bags",
+        "Bag Accessories"
+      ]
+    },
+    {
+      "father": "Collectibles",
+      "child": [
+        "Cultural Items",
+        "Trading Cards & Accessories",
+        "Sports Collectibles",
+        "Entertainment"
+      ]
+    },
+    {
+      "father": "Jewelry Accessories & Derivatives",
+      "child": [
+        "Platinum, Carat Gold",
+        "Silver",
+        "Natural Crystal",
+        "Non-natural Crystal",
+        "Jade",
+        "Semiprecious Stones",
+        "Artificial Gemstones",
+        "Pearl",
+        "Amber",
+        "Mellite"
+      ]
+    }
+  ]

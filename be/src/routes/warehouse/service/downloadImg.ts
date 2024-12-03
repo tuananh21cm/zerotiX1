@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 export const downloadImages = async (dataList:any) => {
-  if (!fs.existsSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/meme")) {
-    fs.mkdirSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/meme");
+  if (!fs.existsSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/anime1")) {
+    fs.mkdirSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/anime1");
   }
 
   for (const item of dataList) {
@@ -12,7 +12,7 @@ export const downloadImages = async (dataList:any) => {
       const { name, img } = item;
       const safeFileName = name + '.jpeg';
 
-      const filePath = path.join("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/test", safeFileName);
+      const filePath = path.join("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/anime1", safeFileName);
 
       console.log(`Downloading: ${img}`);
       const response = await axios({

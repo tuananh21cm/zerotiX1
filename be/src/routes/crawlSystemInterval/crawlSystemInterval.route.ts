@@ -4,7 +4,7 @@ import { addNewData } from "./services/addNewData";
 import { SystemCrawlDto } from "../../models/dtos/systemCrawlDto";
 import cron from "node-cron";
 import { crawlSystemYesterday } from "../../core-playwright/crawlSystem/crawlSystemYesterday";
-export const crawlSystemApiRoute = Router();
+export const    crawlSystemApiRoute = Router();
 // cron.schedule("* * * * *", async () => {
 //     // Runs every minute
 //     try {
@@ -17,17 +17,17 @@ export const crawlSystemApiRoute = Router();
 //     }
 // });
 
-cron.schedule("0 7,12,20 * * *", async () => {
-    // "0 * * * *" runs at the start of every hour
-    try {
-        const dataResponse = await crawlSystem();
-        console.log({ dataResponse });
-        await addNewData(SystemCrawlDto.createObj(dataResponse));
-        console.log("Crawl system cron job executed successfully.");
-    } catch (error) {
-        console.error("Error executing crawl system cron job:", error);
-    }
-});
+// cron.schedule("0 */2 * * *", async () => {
+//     // "0 * * * *" runs at the start of every hour
+//     try {
+//         const dataResponse = await crawlSystem();
+//         console.log({ dataResponse });
+//         await addNewData(SystemCrawlDto.createObj(dataResponse));
+//         console.log("Crawl system cron job executed successfully.");
+//     } catch (error) {
+//         console.error("Error executing crawl system cron job:", error);
+//     }
+// });
 // cron.schedule("0 7 * * *", async () => {
 //     try {
 //         const dataResponse = await crawlSystemYesterday();

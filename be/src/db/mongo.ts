@@ -10,6 +10,7 @@ import { postFBCrawlDataEntity } from "./dataEntities/postFBCrawlDataEntity";
 import { creatorDataEntity } from "./dataEntities/creatorDataEntity";
 import { keywordTitleDataEntity } from "./dataEntities/keyWordEntity";
 import { profieToolListDataEntity } from "./dataEntities/profileToolListDataEntity";
+import { clonePro5DataEntity } from "./dataEntities/clonePro5";
 
 interface IDataStore {
     __client: MongoClient;
@@ -24,6 +25,7 @@ interface IDataStore {
     creator:Collection<creatorDataEntity>;
     keywordTitle:Collection<keywordTitleDataEntity>;
     profileToolList:Collection<profieToolListDataEntity>;
+    clonePro5:Collection<clonePro5DataEntity>;
 }
 export let dbConnectionCount = 0;
 async function initMongoDb(): Promise<IDataStore> {
@@ -42,6 +44,7 @@ async function initMongoDb(): Promise<IDataStore> {
     const creator = db.collection<creatorDataEntity>(`${dbConfig.mongoDb.sysPrefix}creator`);
     const keywordTitle = db.collection<keywordTitleDataEntity>(`${dbConfig.mongoDb.sysPrefix}keywordTitle`);
     const profileToolList = db.collection<profieToolListDataEntity>(`${dbConfig.mongoDb.sysPrefix}profileToolList`);
+    const clonePro5 = db.collection<clonePro5DataEntity>(`${dbConfig.mongoDb.sysPrefix}clonePro5`);
 
     return {
         __client: client,
@@ -55,11 +58,11 @@ async function initMongoDb(): Promise<IDataStore> {
         postFBCrawl,
         creator,
         keywordTitle,
-        profileToolList
+        profileToolList,
+        clonePro5
     };
 }
 
-// Don't use export const mongoDb = initMongoDb;
-// Depends on how it is used you may establishing multiple connections
+
 const _mongoDb = initMongoDb();
 export const mongoPromise = _mongoDb;

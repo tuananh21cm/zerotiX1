@@ -8,3 +8,26 @@ export async function GetDataJson() {
   const data = JSON.parse(rawData);
   return data;
 }
+
+import { mongoPromise } from "../../../db/mongo";
+
+export const getProfile = async (category: string, tag: string) => {
+    try {
+        const db = await mongoPromise;
+        const query: any = {};
+        if (category) {
+            query.category = category;
+        }
+        if (tag) {
+            query.tag = tag;
+        }
+        const profiles = await db.profileToolList.find(query).toArray();
+        if (!profiles.length) {
+            console.log("No profiles found for the provided category and tag.");
+        }
+        return profiles;
+    } catch (error) {
+        console.error("Error fetching profiles by category and tag:", error);
+        throw error;
+    }
+};

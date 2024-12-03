@@ -6,6 +6,8 @@ export class profileToolListDto {
     order:number; 
     category: string;
     folderPath: string;
+    tag:string
+    status:string
     static createObj = (src?: Partial<profileToolListDto>): profileToolListDto => {
         const obj = new profileToolListDto();
         return {

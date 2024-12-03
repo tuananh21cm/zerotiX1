@@ -13,7 +13,6 @@
 	// export let data;
 	let images:any[] = [];
   
-
   </script>
 <section>
 	<div>

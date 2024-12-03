@@ -8,6 +8,7 @@ export interface IProfleToolList {
     order:number;
     category:string;
     folderPath:string;
+    tag:string
 }
 
 export const addProfile= async (dataProfile: IProfleToolList) => {

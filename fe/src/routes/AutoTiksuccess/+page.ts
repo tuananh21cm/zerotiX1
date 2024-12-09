@@ -1,7 +1,10 @@
 export async function load() {
   try {
+    //   const response = await fetch(
+    //       `http://localhost:3001/keywordTitle?category=meme`
+    //   );
       const response = await fetch(
-          `http://localhost:3001/keywordTitle?category=meme`
+          `http://localhost:3001/keywordTitle/file`
       );
       const response2 = await fetch(
           "http://localhost:3001/tikSuccess"

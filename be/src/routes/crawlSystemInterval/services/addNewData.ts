@@ -1,13 +1,16 @@
 import { mongoPromise } from "../../../db/mongo";
-import { sendEmail } from "../../../utils/sendMail";
+import { sendEmail, sendEmailYesterday } from "../../../utils/sendMail";
 export interface IData {
     _id: any;
     totalSold: number;
     detail: any;
     createAt: any;
 }
-
-export const addNewData = async (dataSystem: IData) => {
+export enum DAYTYPE{
+    TODAY="TODAY",
+    YESTERDAY="YESTERDAY"
+}
+export const addNewData = async (dataSystem: any,dateType:DAYTYPE) => {
     try {
         const db = await mongoPromise;
         const collection = db.crawlSystem;
@@ -27,7 +30,12 @@ export const addNewData = async (dataSystem: IData) => {
                         }
                     }
                 );
-                sendEmail(dataSystem);
+                if(dateType == DAYTYPE.TODAY){
+                    sendEmail(dataSystem)
+                }
+                else{
+                    sendEmailYesterday(dataSystem);
+                }
                 console.log("Database updated with new data.");
                 return updatedData;
             } else if (dataSystem.totalSold === existData.totalSold) {

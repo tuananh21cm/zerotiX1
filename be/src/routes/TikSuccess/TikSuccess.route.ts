@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { GetDataJson } from "./service/getProfileName";
 import { genListing } from "../../core-playwright/TikSuccess/genListing";
+import { raisedAccount } from "./service/raisedAccount";
 // import { getFileByOrder, raisedAccount } from "./service/raisedAccount";
 export const TikSuccessRoute = Router();
 
@@ -30,6 +31,15 @@ TikSuccessRoute.post("/raised", async (req: Request, res: Response, next: NextFu
         console.log(req.body);
         // raisedAccount()
         // getFileByOrder("C:/code/X1Code/fe/static/warehouse/meme1",3);
+        next();
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+TikSuccessRoute.post("/raisedAccount", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        await raisedAccount();
         next();
     } catch (error) {
         console.log(error);

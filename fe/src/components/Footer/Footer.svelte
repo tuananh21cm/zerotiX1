@@ -7,8 +7,7 @@
 	<!-- <img src={logo} height="58px" alt="zeroti logo" /> -->
 
 	<p>
-		Zeroti Web Insight<br />
-		V1.0.0-alpha-0
+		👙
 	</p>
 </footer>
 

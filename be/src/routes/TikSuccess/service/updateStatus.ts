@@ -19,7 +19,7 @@ export const updateStatus = async (dataProfile: IProfleToolList,status: string) 
         const existingProfile = await db.profileToolList.findOne({ profileName: dataProfile.profileName });
 
         if (existingProfile) {
-            const updated = await db.profileToolList.updateOne(
+            await db.profileToolList.updateOne(
                 { profileName: dataProfile.profileName },
                 { $set: { status } }
             );

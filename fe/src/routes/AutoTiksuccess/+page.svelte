@@ -8,14 +8,13 @@
 	import * as XLSX from 'xlsx';
 	let folderInput: HTMLInputElement | null = null;
 	let fileNames: string[] = [];
-	let filePaths: string[] = [];
 	import { load } from './+page';
 	load();
 	let keyword = '';
 	let numberAccount = 1;
 	let generateTitles: any = [];
-	const keywords = writable<any[]>([]);
 	export let data;
+	const keywords:any = data.data?.data;
 	let listName: any = [];
 	let editingIndex: any = null;
 	export let options: string[] = data.data?.data2.data.map(
@@ -30,7 +29,16 @@
 		category: 'meme',
 		folderPath: ''
 	};
+	let editingTitleIndex: number | null = null;
+	const updateTitle = (index: number, newValue: string) => {
+        generateTitles.generatedTitles[index] = newValue;
+        editingTitleIndex = null; // Exit edit mode
+    };
 
+    // Function to cancel editing
+    const cancelEditTitle = () => {
+        editingTitleIndex = null; // Exit edit mode without saving
+    };
 	const handleSubmitAddProfile = (event: Event) => {
 		event.preventDefault();
 		console.log('Form Data Submitted:', formData);
@@ -39,9 +47,13 @@
 	$: filteredOptions = options.filter((option) =>
 		option.toLowerCase().includes($searchQuery.toLowerCase())
 	);
-
+	if (folderInput) {
+		(folderInput as HTMLInputElement).webkitdirectory = true;
+		(folderInput as HTMLInputElement).setAttribute('directory', '');
+	}
 	// Toggle dropdown visibility
 	function toggleDropdown() {
+		isFileSelected = true;
 		dropdownOpen.update((state) => !state);
 	}
 	const exportToExcel = () => {
@@ -68,13 +80,14 @@
 			currentSelections.filter((selected) => selected !== option)
 		);
 	}
-	onMount(() => {
-		keywords.set([...data.data?.data]);
-		console.log('ok');
-		if (folderInput) {
-			(folderInput as any).webkitdirectory = true;
-		}
-	});
+	// onMount(() => {
+	// 	// console.log("hehe :",...data.data?.data)
+	// 	keywords.set([...data.data?.data]);
+	// 	console.log('ok');
+	// 	if (folderInput) {
+	// 		(folderInput as any).webkitdirectory = true;
+	// 	}
+	// });
 	const AddKeyword = async () => {
 		console.log(keyword);
 		try {
@@ -99,21 +112,37 @@
 			keyword = '';
 		}
 	};
+	const newNames: Set<string> = new Set();
+	const filePaths: Set<string> = new Set();
 	const handleFolderSelection = (event: Event) => {
-		const input = event.target as HTMLInputElement;
-		if (input.files) {
-			const newNames = [];
-			for (let i = 0; i < input.files.length; i++) {
-				const file = input.files[i];
-				if (file.name.split('.')[0].includes('Thumbs')) continue;
-				newNames.push(file.name.split('.')[0]);
-				filePaths.push(file.webkitRelativePath);
-			}
-			listName = [...listName, ...newNames]; // Reassign to trigger reactivity
-		} else {
-			console.log('No files selected');
-		}
-	};
+    const input = event.target as HTMLInputElement;
+    try {
+        if (input.files) {
+            for (let i = 0; i < input.files.length; i++) {
+                const file = input.files[i];
+                if (file.name.includes('Thumbs')) continue;
+                const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
+
+                newNames.add(fileNameWithoutExtension);
+                filePaths.add(file.webkitRelativePath);
+		console.log("hhee :",filePaths)
+
+            }
+
+            // Update the reactive variables
+            listName = [...listName, ...newNames];
+            console.log('Unique File Names Without Extension:', Array.from(newNames));
+            console.log('Unique File Paths:', Array.from(filePaths));
+        } else {
+            console.log('No files selected');
+        }
+
+    } catch (error) {
+        console.error('Error handling folder selection:', error);
+    }
+};
+
+
 	const handleGenTitle = async () => {
 		console.log({ listName });
 		console.log({ numberAccount });
@@ -138,11 +167,13 @@
 		}
 	};
 	const genList = async () => {
+		console.log(filePaths);
 		const response = await fetch('http://localhost:3001/tikSuccess', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
+			
 			body: JSON.stringify({
 				fileNames: generateTitles.generatedTitles,
 				filePaths,
@@ -160,6 +191,7 @@
 	const updateItem = (index: any, newValue: any) => {
 		listName[index] = newValue;
 		editingIndex = null;
+		isFileSelected = true;
 	};
 	const cancelEdit = () => {
 		editingIndex = null; // Exit edit mode without saving
@@ -172,6 +204,7 @@
 		// }
 	};
 	let profiles: string[] = [];
+	let isFileSelected = false
 	// export let options: string[] = data.data.data.map((entry: { profile: string }) => entry.profile);
 
 	// let searchQuery = writable<string>('');
@@ -214,7 +247,7 @@
 	<div>
 		<div class="d-flex justify-content-center">
 			<h1 class="mr-5 text-3xl font-bold text-cyan-300">Auto Tiksuccess</h1>
-			<!-- Button trigger modal -->
+			<!-- Button trigger Add Profile-->
 			<button
 				type="button"
 				class="btn btn-warning"
@@ -223,7 +256,6 @@
 			>
 				➕
 			</button>
-
 			<!-- Modal -->
 			<div
 				class="modal fade"
@@ -317,9 +349,8 @@
 		</div>
 		<div class="d-flex justify-content-between">
 			<div>
-				<input type="file" bind:this={folderInput} on:change={handleFolderSelection} />
+				<input type="file" bind:this={folderInput} on:change={handleFolderSelection}  multiple webkitdirectory/>
 			</div>
-
 			<button
 				type="button"
 				class="btn btn-primary"
@@ -402,22 +433,41 @@
 						{/each}
 					</div>
 				</div>
-				<button type="button" class="btn btn-primary mt-5" on:click={handleGenTitle}
+				<button type="button" class="btn btn-primary mt-5" on:click={handleGenTitle} disabled={!isFileSelected} 
 					>Preview Title</button
 				>
 			</div>
 			<div class="d-flex m-5">
 				<div class="d-flex flex-column">
 					{#if generateTitles?.generatedTitles}
-						<button
+						<div class="d-flex justify-content-center">
+							<button
 							on:click={exportToExcel}
 							class="btn btn-success d-flex align-items-center justify-content-center px-4 py-2 shadow-sm"
 						>
 							Export to Excel ⬇
 						</button>
+						</div>
 						<ul class="d-flex flex-column justify-start">
 							{#each generateTitles.generatedTitles as title, index}
-								<li>{index + 1}. {title}</li>
+								<li class="w-100">
+									{#if editingTitleIndex === index}
+										<!-- Inline editing mode -->
+										<input
+											type="text"
+											class="w-100"
+											bind:value={generateTitles.generatedTitles[index]}
+											on:blur={() => updateTitle(index, generateTitles.generatedTitles[index])}
+											on:keydown={(e) => e.key === 'Enter' && updateTitle(index, generateTitles.generatedTitles[index])}
+											on:keydown={(e) => e.key === 'Escape' && cancelEditTitle()}
+										/>
+									{:else}
+										<!-- Display mode -->
+										<span on:click={() => (editingTitleIndex = index)}>
+											{index + 1}. {title}
+										</span>
+									{/if}
+								</li>
 							{/each}
 						</ul>
 					{:else}
@@ -445,7 +495,7 @@
 								></button>
 							</div>
 							<div class="modal-body">
-								<div class="input-group mb-3">
+								<!-- <div class="input-group mb-3">
 									<input
 										type="text"
 										class="form-control"
@@ -460,20 +510,17 @@
 										id="button-addon2"
 										on:click={() => AddKeyword()}>Add</button
 									>
-								</div>
+								</div> -->
 								<div>
-									{#each $keywords as keyword}
+									{#each keywords as keyword}
 										<div class="keyword">
 											<div class="d-flex justify-content-between">
-												<p>{keyword.keyword}</p>
-												<button>❌</button>
+												<p>{keyword}</p>
+												<!-- <button>❌</button> -->
 											</div>
 										</div>
 									{/each}
 								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-primary">Save</button>
 							</div>
 						</div>
 					</div>

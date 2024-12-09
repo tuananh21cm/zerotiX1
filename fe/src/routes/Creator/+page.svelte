@@ -14,22 +14,22 @@
 
 	const handleGenExcel=async ()=>{
 		console.log("Textarea Content:", textareaContent);
-		// try {
-		// 	const response = await fetch(`http://localhost:3001/creator/excelGenerator`, {
-		// 		method: 'POST',
-		// 		headers: {
-		// 			'Content-Type': 'application/json'
-		// 		},
-		// 		body: JSON.stringify({ listAccount: textareaContent })
-		// 	});
-		// 	if (response.ok) {
-		// 		console.log('scroll is in progress');
-		// 	} else {
-		// 		console.error('failed to delete');
-		// 	}
-		// } catch (error) {
-		// 	console.log('error :', error);
-		// }
+		try {
+			const response = await fetch(`http://localhost:3001/creator/excelGenerator`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ listAccount: textareaContent })
+			});
+			if (response.ok) {
+				console.log('scroll is in progress');
+			} else {
+				console.error('failed to delete');
+			}
+		} catch (error) {
+			console.log('error :', error);
+		}
 	}
 </script>
 

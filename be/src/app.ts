@@ -17,6 +17,7 @@ import { reportRoute } from "./routes/report/report.route";
 import { keywordTitleRoute } from "./routes/keywordTitle/keywordTitle.route";
 import { warehouseRoute } from "./routes/warehouse/warehouse.route";
 import { profileToolListRoute } from "./routes/profileToolList/profile.route";
+import { clonePro5SystemRoute } from "./routes/clonePro5System/clonePro5System";
 export const app = express();
 export const server = http.createServer(app);
 app.use(cors({
@@ -40,3 +41,5 @@ app.use("/report",reportRoute);
 app.use("/keywordTitle",keywordTitleRoute);
 app.use("/warehouse",warehouseRoute);
 app.use("/profileToolList",profileToolListRoute);
+app.use("/clonePro5",clonePro5SystemRoute);
+app.use("/keyFollowShopPlus",clonePro5SystemRoute);

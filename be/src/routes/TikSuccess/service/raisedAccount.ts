@@ -75,7 +75,9 @@ export const raisedAccount = async () => {
     // const filePathFull = `${basedPath}/${category}`;
     // const fileName = getFileNameByOrder(filePathFull,order);
     // const profiles = await getProfile();
-    const profilesData: any = await getProfile("anime","anime");
+    const profilesData: any = await getProfile("anime","anime","live");
+    const profilesData2: any = await getProfile("sport","sport-old","live");
     console.log(profilesData.length);
     await raisedAccountCore(profilesData);
+    await raisedAccountCore(profilesData2);
 }

@@ -29,6 +29,7 @@ creatorRoute.post("/findByShopPlus", async (req, res): Promise<void> => {
 creatorRoute.post("/excelGenerator", async (req, res): Promise<void> => {
     try {
         const { listAccount } = req.body;
+        console.log({listAccount})
         const db = await mongoPromise;
 
         // Split listAccount into an array of names

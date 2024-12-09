@@ -3,6 +3,8 @@ import { GetDataJson } from "../../routes/TikSuccess/service/getProfileName";
 import { getFileNameByOrder } from "../../routes/TikSuccess/service/getFileNameByOrder";
 import { addOrIncrementBatchProfiles } from "../../routes/TikSuccess/service/increaseOrder";
 import { updateStatus } from "../../routes/TikSuccess/service/updateStatus";
+import { generateSingleTitle } from "../../utils/genSingleTitle";
+import { getKeyWord } from "../../routes/keywordTitle/services/getKeyWord";
 const priorityProfile = [
     "TIKTOKNEW42",
     "TIKTOKNEW239",
@@ -61,12 +63,12 @@ interface IProfile {
     order: number,
     category: string,
     filePath: string
-    tag: string
+    tag: string,
+    status:string
 }
 const basedPath = 'C:/code/X1Code/fe/static/warehouse'
 
 export const raisedAccountCore = async function (profiles: IProfile[]): Promise<void> {
-
     const browser = await chromium.launch({
         headless: false,
     });
@@ -96,6 +98,7 @@ export const raisedAccountCore = async function (profiles: IProfile[]): Promise<
         let isDied: boolean = false;
         const checkDied = await tab.$eval("table tbody tr:nth-child(2) td:nth-child(8)", el => el.textContent);
         if (checkDied == "DIED") {
+            console.log("died");
             await tab.click("button span:has-text('Sync Kiki')");
             await tab.waitForLoadState("load");
             await tab.waitForTimeout(8000);
@@ -104,12 +107,11 @@ export const raisedAccountCore = async function (profiles: IProfile[]): Promise<
             await tab.waitForTimeout(8000);
             const checkDied = await tab.$eval("table tbody tr:nth-child(2) td:nth-child(8)", el => el.textContent);
             if(checkDied == "DIED") isDied=true ;
-            updateStatus(item,"died")
+            updateStatus(item,"died");
             return;
         }
         else{
-            updateStatus(item,"live")
-
+            updateStatus(item,"live");
         }
         await tab.goto(`https://apps.tiksuccess.com/quan-ly-listing`);
         await tab.waitForLoadState("load");
@@ -140,15 +142,21 @@ export const raisedAccountCore = async function (profiles: IProfile[]): Promise<
         if(item.category == "anime"){
             await tab.fill(`textarea#product_name`, "Graphic " + " Tee " + fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim() + " " + " Otaku");
         }
+        if(item.category == "sport"){
+            const keywords :any= await getKeyWord("meme");
+            const title = await generateSingleTitle(fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim(),keywords.map((item:any)=>item.keyword));
+            await tab.fill(`textarea#product_name`, "Football " + " Tee " + title+ " " + " Sport");
+        }
         await tab.click(`tbody tr:nth-child(2) span b:has-text('Save')`);
         await tab.waitForLoadState("load");
         await tab.waitForTimeout(5000);
         await tab.click(".ant-table-measure-row+ .ant-table-row-level-0 .ant-space-item .ant-btn-primary")
         await tab.waitForTimeout(5000);
-
+        await tab.close();
         //update order ++
         await addOrIncrementBatchProfiles(item);
 
     });
     await Promise.all(profileTabs);
+    await browser.close();
 };

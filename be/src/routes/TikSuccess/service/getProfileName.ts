@@ -11,7 +11,7 @@ export async function GetDataJson() {
 
 import { mongoPromise } from "../../../db/mongo";
 
-export const getProfile = async (category: string, tag: string) => {
+export const getProfile = async (category: string, tag: string,status:string) => {
     try {
         const db = await mongoPromise;
         const query: any = {};
@@ -21,9 +21,12 @@ export const getProfile = async (category: string, tag: string) => {
         if (tag) {
             query.tag = tag;
         }
+        if (tag) {
+            query.status = status;
+        }
         const profiles = await db.profileToolList.find(query).toArray();
         if (!profiles.length) {
-            console.log("No profiles found for the provided category and tag.");
+            console.log("No profiles found for the provided category and tag");
         }
         return profiles;
     } catch (error) {

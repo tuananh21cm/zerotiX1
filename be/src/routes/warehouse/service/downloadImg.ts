@@ -2,9 +2,14 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
-export const downloadImages = async (dataList:any) => {
-  if (!fs.existsSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/anime1")) {
-    fs.mkdirSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/anime1");
+interface IData {
+  name:string,
+  amount:number,
+  img:string
+}
+export const downloadImages = async (dataList:IData[]) => {
+  if (!fs.existsSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/game2")) {
+    fs.mkdirSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/game2");
   }
 
   for (const item of dataList) {
@@ -12,7 +17,7 @@ export const downloadImages = async (dataList:any) => {
       const { name, img } = item;
       const safeFileName = name + '.jpeg';
 
-      const filePath = path.join("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/anime1", safeFileName);
+      const filePath = path.join("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/game2", safeFileName);
 
       console.log(`Downloading: ${img}`);
       const response = await axios({
@@ -26,8 +31,6 @@ export const downloadImages = async (dataList:any) => {
         writer.on('finish', resolve);
         writer.on('error', reject);
       });
-
-      console.log(`Saved: ${filePath}`);
     } catch (error) {
       console.error(`Error downloading ${item.name}:`, error);
     }

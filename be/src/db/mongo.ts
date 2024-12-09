@@ -11,6 +11,7 @@ import { creatorDataEntity } from "./dataEntities/creatorDataEntity";
 import { keywordTitleDataEntity } from "./dataEntities/keyWordEntity";
 import { profieToolListDataEntity } from "./dataEntities/profileToolListDataEntity";
 import { clonePro5DataEntity } from "./dataEntities/clonePro5";
+import { keyFollowShopPlusDataEntity } from "./dataEntities/keyFollowShopPlusDataEntities";
 
 interface IDataStore {
     __client: MongoClient;
@@ -26,6 +27,7 @@ interface IDataStore {
     keywordTitle:Collection<keywordTitleDataEntity>;
     profileToolList:Collection<profieToolListDataEntity>;
     clonePro5:Collection<clonePro5DataEntity>;
+    keyFollowShopPlus:Collection<keyFollowShopPlusDataEntity>;
 }
 export let dbConnectionCount = 0;
 async function initMongoDb(): Promise<IDataStore> {
@@ -45,6 +47,7 @@ async function initMongoDb(): Promise<IDataStore> {
     const keywordTitle = db.collection<keywordTitleDataEntity>(`${dbConfig.mongoDb.sysPrefix}keywordTitle`);
     const profileToolList = db.collection<profieToolListDataEntity>(`${dbConfig.mongoDb.sysPrefix}profileToolList`);
     const clonePro5 = db.collection<clonePro5DataEntity>(`${dbConfig.mongoDb.sysPrefix}clonePro5`);
+    const keyFollowShopPlus = db.collection<keyFollowShopPlusDataEntity>(`${dbConfig.mongoDb.sysPrefix}clonePro5`);
 
     return {
         __client: client,
@@ -59,7 +62,8 @@ async function initMongoDb(): Promise<IDataStore> {
         creator,
         keywordTitle,
         profileToolList,
-        clonePro5
+        clonePro5,
+        keyFollowShopPlus
     };
 }
 

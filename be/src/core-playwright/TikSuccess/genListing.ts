@@ -18,6 +18,10 @@ export function readFile(filePath: string): Promise<string[]> {
 }
 export const genListing = async function (fileNames: string[], filePaths: string[], profiles: string[]): Promise<void> {
     try {
+        console.log(fileNames)
+        console.log(filePaths)
+        console.log(profiles)
+        console.log("start gen")
         const bChunks = chunkArray(fileNames, filePaths.length);
         console.log(bChunks)
         const chunk = (fileNames.length)/(profiles.length);

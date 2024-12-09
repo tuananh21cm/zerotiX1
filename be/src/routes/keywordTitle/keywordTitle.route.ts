@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { getProfile } from "../../core-playwright/AccessTradde/getProfile";
 import { addKeywordsBatch, addKeyWordTitle } from "./services/keywordTitle";
 import { getKeyWord } from "./services/getKeyWord";
+import { getKeyWordFromFile } from "./services/getKeyWordFromFile";
 
 export const keywordTitleRoute = Router();
 
@@ -22,6 +23,19 @@ keywordTitleRoute.get("/", async (req: Request, res: Response, next: NextFunctio
     try {
         const lisTitle = await getKeyWord(req.query.category as string);
         // console.log({lisTitle})
+        res.json(lisTitle);
+        next();
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+//get title by File
+keywordTitleRoute.get("/file", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const filePath:string= "//172.16.0.30/kbt_global/KBT_Teamx1/Images/tikSuccess/tuananh/keys.txt"
+        const lisTitle = await getKeyWordFromFile(filePath);
+        console.log({lisTitle})
         res.json(lisTitle);
         next();
     } catch (error) {

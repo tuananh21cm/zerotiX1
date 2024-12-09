@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { Chart, registerables } from "chart.js";
     import ChartDataLabels from "chartjs-plugin-datalabels";
-
+    import { writable } from 'svelte/store';
     let chart: any;
     let chartCanvas: HTMLCanvasElement;
 
@@ -79,7 +79,43 @@
         console.log("Canvas Element:", chartCanvas);
         initializeChart();
     });
-    
+    async function getNewData() {
+		try {
+			const response = await fetch('http://localhost:3001/crawlSystem/crawlNewData', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if (response.ok) {
+				console.log(" successfully:");
+			} else {
+				console.error('Failed:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+    const fetchDataSellerDetail = async (tabName:any) => {
+        try {
+            const response = await fetch(`http://localhost:3001/data?category=${tabName}`);
+            if (response.ok) {
+                const result = await response.json();
+                tabSellerData.set(result);
+            } else {
+                console.error('Failed to fetch data:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    const activeSellerTab = writable('meme'); // Default active tab
+    const tabSellerData = writable([]);
+    const changeTab = (tabName:any) => {
+        activeSellerTab.set(tabName);
+        fetchDataSellerDetail(tabName);
+    };
 </script>
 
 
@@ -126,6 +162,10 @@
 
 <div style="padding:50px">
 
+    <div class=" d-flex justify-content-center align-items-center">
+       <p class="mx-3"> X1 Team </p>
+       <button type="button" class="btn btn-warning" on:click={getNewData}>📩</button>
+    </div>
     <div class="d-flex">
         <!-- Legend -->
     <div class="legend">

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { getProfile } from "../../core-playwright/AccessTradde/getProfile";
 import { addKeywordsBatch, addKeyWordTitle } from "./services/keywordTitle";
 import { getKeyWord } from "./services/getKeyWord";
 import { getKeyWordFromFile } from "./services/getKeyWordFromFile";

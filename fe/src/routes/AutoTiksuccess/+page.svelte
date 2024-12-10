@@ -167,7 +167,7 @@
 		}
 	};
 	const genList = async () => {
-		console.log(filePaths);
+		console.log("reqwuest : ",filePaths);
 		const response = await fetch('http://localhost:3001/tikSuccess', {
 			method: 'POST',
 			headers: {
@@ -176,7 +176,7 @@
 			
 			body: JSON.stringify({
 				fileNames: generateTitles.generatedTitles,
-				filePaths,
+				filePaths:[...filePaths],
 				profiles: $selectedOptions
 			}) // Send the title data in the body of the request
 		});

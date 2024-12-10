@@ -61,8 +61,10 @@ export const genListing = async function (fileNames: string[], filePaths: string
             await tab.waitForLoadState("load");
             await tab.waitForTimeout(4000);
             for (let i = 0; i < fileNames.length; i++) {
+                console.log(filePaths[i] )
                 const fileName = fileNames[i];
                 if(fileName == "Thumbs") continue;
+                if(filePaths[i] === undefined) continue;
                 await tab.click(`tbody tr:nth-child(${i + 2}) span[title='Edit Listing']`);
                 await tab.setInputFiles(`tbody tr:nth-child(${i + 2}) .ant-upload-list.ant-upload-list-picture-circle input`, `//172.16.0.30/kbt_global/KBT_Teamx1/Images/tikSuccess/tuananh/${filePaths[i]}`);
                 await tab.fill(`tbody tr:nth-child(${i + 2}) textarea#product_name`, bChunks[index][i]);

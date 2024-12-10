@@ -1,4 +1,5 @@
 import { chromium, Page } from "playwright-core";
+import { ITopSold30Days } from "../../models/dtos/systemCrawlDto";
 
 interface Seller {
     name: string;
@@ -19,7 +20,7 @@ interface ProcessedData {
 interface SellerData {
     name: string;
     amountSold: number;
-    processedData:any
+    processedData: any
 }
 
 interface ReportData {
@@ -116,16 +117,73 @@ const fetchDataForSeller = async (jobPage: Page, seller: Seller): Promise<Seller
         image
     }));
 
-    console.log({ processedData });
 
-    return { name, amountSold,processedData };
+    return { name, amountSold, processedData };
 };
-
-export const crawlSystem = async (): Promise<any> => {
+const getTop30DaySystem = async () => {
+    const data: ITopSold30Days[] = [];
     const browser = await chromium.launch({ headless: false });
     const browserContext = await browser.newContext();
     const jobPage = await browserContext.newPage();
 
+    await jobPage.route("**/*", (route) => {
+        const request = route.request();
+        if (["stylesheet", "image", "font", "media", "script"].includes(request.resourceType())) {
+            route.abort();
+        } else {
+            route.continue();
+        }
+    });
+
+    try {
+        await jobPage.goto("https://system.kbt.global/");
+        await jobPage.waitForLoadState("domcontentloaded");
+        await jobPage.fill("input#email", "tuananh@kbt.global");
+        await jobPage.fill("input#password", "Ubu6DQp0WyAkdaj");
+        await jobPage.click("button.btn.btn-primary:has-text('Login')");
+        await jobPage.waitForLoadState("domcontentloaded");
+
+        const reportView = await browserContext.newPage();
+        await reportView.route("**/*", (route) => {
+            const request = route.request();
+            if (["stylesheet", "image", "font", "media", "script"].includes(request.resourceType())) {
+                route.abort();
+            } else {
+                route.continue();
+            }
+        });
+        const dateFilter = getCurrentMonthFixedDateFilter();
+        const url = `https://system.kbt.global/admin/keyword_search?tab=30`;
+        await reportView.goto(url);
+        await reportView.waitForLoadState("load");
+        await reportView.waitForTimeout(30000);
+        const listData = await reportView.$$eval(
+            "form table tbody tr",
+            (els: HTMLElement[]) =>
+                els.map((el) => {
+                    const amountEl = el.querySelector(".text-center b");
+                    const titleEl = el.querySelector(".text-center+ td b");
+                    const imageUrlEl = el.querySelector("td:nth-child(5) a");
+                    return {
+                        amount: Number(amountEl?.textContent?.trim()) || 0,
+                        imageUrl: imageUrlEl?.getAttribute("href") || "",
+                        title: titleEl?.textContent?.trim() || 0
+                    };
+                })
+        );
+        return listData
+    } catch (error) {
+        console.error("Error in crawlSystem:", error);
+    } finally {
+        await browserContext.close();
+        await browser.close();
+    }
+}
+export const crawlSystem = async (): Promise<any> => {
+    const dataTopSold30days  = await getTop30DaySystem();
+    const browser = await chromium.launch({ headless: false });
+    const browserContext = await browser.newContext();
+    const jobPage = await browserContext.newPage();
     await jobPage.route("**/*", (route) => {
         const request = route.request();
         if (["stylesheet", "image", "font", "media", "script"].includes(request.resourceType())) {
@@ -171,7 +229,8 @@ export const crawlSystem = async (): Promise<any> => {
         return {
             totalSold,
             detail: allSellerData,
-            reportMonth: { namesReport, soldReport, coefficient }
+            reportMonth: { namesReport, soldReport, coefficient },
+            TopSold30days:dataTopSold30days
         };
     } catch (error) {
         console.error("Error in crawlSystem:", error);
@@ -179,4 +238,5 @@ export const crawlSystem = async (): Promise<any> => {
         await browserContext.close();
         await browser.close();
     }
+  
 };

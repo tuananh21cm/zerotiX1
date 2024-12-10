@@ -26,6 +26,15 @@ crawlSystemApiRoute.post("/crawlDataYesterday", async (req, res, next): Promise<
         next();
     }
 });
+crawlSystemApiRoute.get("/test", async (req, res, next): Promise<void> => {
+    try {
+      const data =await crawlSystem();
+      console.log("data :",data);
+    } catch (e) {
+        console.error(e);
+        next();
+    }
+});
 
 // cron.schedule("0 */2 * * *", async () => {
 //     // "0 * * * *" runs at the start of every hour

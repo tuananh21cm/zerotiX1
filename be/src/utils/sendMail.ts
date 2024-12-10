@@ -282,7 +282,7 @@ export const sendEmailYesterday = async (data: any) => {
         const mailOptions = {
             from: "tuananh.kbt2024@gmail.com",
             to: ["tuananh.kbt2024@gmail.com"
-                ,"ebayinc2020.nv32@gmail.com","quanganhbn168@gmail.com","honghanh240801@gmail.com","tranductuanbn99@gmail.com","ebayinc2020.nv87@gmail.com","thaodo.2610.a@gmail.com","ebayinc2020.nv46@gmail.com"
+                // ,"ebayinc2020.nv32@gmail.com","quanganhbn168@gmail.com","honghanh240801@gmail.com","tranductuanbn99@gmail.com","ebayinc2020.nv87@gmail.com","thaodo.2610.a@gmail.com","ebayinc2020.nv46@gmail.com"
             ],
             subject: "Báo Cáo Sold Ngày Hôm Qua X1 Team",
             html: `

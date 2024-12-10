@@ -16,7 +16,7 @@ export const addNewData = async (dataSystem: any,dateType:DAYTYPE) => {
         const collection = db.crawlSystem;
 
         const existData = await collection.findOne({}, { sort: { createdAt: -1 } }); // Get the newest document by createdAt or totalSold
-
+        console.log(dataSystem.TopSold30days)
         if (existData) {
             if (dataSystem.totalSold !== existData.totalSold) {
                 // Update only specific fields explicitly to avoid MongoDB type mismatch errors
@@ -26,6 +26,7 @@ export const addNewData = async (dataSystem: any,dateType:DAYTYPE) => {
                         $set: {
                             totalSold: dataSystem.totalSold,
                             detail: dataSystem.detail,
+                            TopSold30days:dataSystem.TopSold30days,
                             createAt: dataSystem.createAt
                         }
                     }

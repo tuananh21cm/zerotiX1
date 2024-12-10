@@ -24,29 +24,8 @@
 			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
 				<a href="/">Home</a>
 			</li>
-			<!-- <li aria-current={$page.url.pathname.startsWith('/Post-Crawl') ? 'page' : undefined}>
-				<a href="/Post-Crawl">Post Crawl</a>
-			</li>
-			<li aria-current={$page.url.pathname.startsWith('/flash') ? 'page' : undefined}>
-				<a href="/Flash">Flash</a>
-			</li> -->
-			<!-- <li aria-current={$page.url.pathname.startsWith('/seo-insight') ? 'page' : undefined}>
-				<a href="/Account-management">Account management</a>
-			</li> -->
-			<!-- <li aria-current={$page.url.pathname.startsWith('/seo-insight') ? 'page' : undefined}>
-				<a href="/Analytics">Analytics</a>
-			</li> -->
 			<li aria-current={$page.url.pathname.startsWith('/AutoTiksuccess') ? 'page' : undefined}>
 				<a href="/AutoTiksuccess"> Tiksuccess</a>
-			</li>
-			<!-- <li aria-current={$page.url.pathname.startsWith('/GenerateListing') ? 'page' : undefined}>
-				<a href="/GenerateListing"> Listing</a>
-			</li> -->
-			<li aria-current={$page.url.pathname.startsWith('/Creator') ? 'page' : undefined}>
-				<a href="/Creator"> Creator</a>
-			</li>
-			<li aria-current={$page.url.pathname.startsWith('/Warehouse') ? 'page' : undefined}>
-				<a href="/Warehouse"> Warehouse</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -54,6 +33,6 @@
 		</svg>
 	</nav>
 	<div >
-		<p class="nameProfile">X1</p>
+		<p class="nameProfile">.</p>
 	</div>
 </header>

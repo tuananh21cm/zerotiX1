@@ -1,5 +1,6 @@
 export async function load() {
   try {
+    console.log("aaa")
     //   const response = await fetch(
     //       `http://localhost:3001/keywordTitle?category=meme`
     //   );

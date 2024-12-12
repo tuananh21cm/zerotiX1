@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 export async function GetDataJson() {
-  const filePath = path.resolve('C:/code/web/zeroti-self-api/src/db/jsonData/listProfile.json');
+  const filePath = path.resolve('//172.16.0.30/kbt_global/KBT_Teamx1/Images/tikSuccess/listProfile.json');
   const rawData = fs.readFileSync(filePath, 'utf-8');
   const data = JSON.parse(rawData);
   return data;

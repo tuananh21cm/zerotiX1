@@ -39,9 +39,9 @@
 			<li aria-current={$page.url.pathname.startsWith('/AutoTiksuccess') ? 'page' : undefined}>
 				<a href="/AutoTiksuccess"> Tiksuccess</a>
 			</li>
-			<!-- <li aria-current={$page.url.pathname.startsWith('/GenerateListing') ? 'page' : undefined}>
-				<a href="/GenerateListing"> Listing</a>
-			</li> -->
+			<li aria-current={$page.url.pathname.startsWith('/Trend') ? 'page' : undefined}>
+				<a href="/Trend">Trend</a>
+			</li>
 			<li aria-current={$page.url.pathname.startsWith('/Creator') ? 'page' : undefined}>
 				<a href="/Creator"> Creator</a>
 			</li>

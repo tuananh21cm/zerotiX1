@@ -145,6 +145,8 @@ export const crawlSystemYesterday = async (): Promise<any> => {
 
     try {
         await jobPage.goto("https://system.kbt.global/");
+        await jobPage.waitForTimeout(3000)
+
         await jobPage.waitForLoadState("domcontentloaded");
         await jobPage.fill("input#email", "teamX1@kbt.global");
         await jobPage.fill("input#password", "446ade18f3d6d335fc66");

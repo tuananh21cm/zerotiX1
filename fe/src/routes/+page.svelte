@@ -129,9 +129,10 @@
 		activeSellerTab.set(tabName);
 		fetchDataSellerDetail(tabName);
 	};
-	$: sortedData = data.data[0].detail[activeTab]?.processedData
+	$: sortedData = data?.data?.[0]?.detail?.[activeTab]?.processedData
 		? [...data.data[0].detail[activeTab].processedData].sort((a, b) => b.amount - a.amount)
 		: [];
+
 	let activeTab = 0;
 	const setActiveTab = (index: number) => {
 		activeTab = index;
@@ -141,125 +142,140 @@
 <div style="padding:50px">
 	<div class=" d-flex justify-content-center align-items-center">
 		<p class="mx-3">X1 Team</p>
+		
 		<button type="button" class="btn btn-warning" on:click={getNewData}>📩</button>
 	</div>
-    <div class="d-flex"> 
-        <!-- left tab  -->
-        <div >
-            <div class="d-flex">
-                <!-- Legend -->
-                <div class="legend">
-                {#each data.data[0].detail as item, index}
-                    <div class="legend-item">
-                        <div
-                            class="color-box"
-                            style="background-color: {getColor(index)}"
-                        ></div>
-                        <span>{item.name}: {item.amountSold}</span>
-                    </div>
-                {/each}
-            </div>
-                <!-- Pie Chart -->
-                <div class="chart-container">
-                    <canvas bind:this={chartCanvas}></canvas>
-                </div>
-            </div>
-        
-            <!-- top sold today -->
-            <div class="row">
-                <div class="col-10 text-white text-center">
-                {#if data.data[0].detail.length === 0}
-                    <!-- Display a loading message if no data is provided -->
-                    <div class="mt-5 text-center">
-                        <p>Loading...</p>
-                    </div>
-                {:else}
-                    
-                    <ul class="nav nav-tabs d-flex " style="margin: 30px;">
-                        {#each data.data[0].detail as seller, index}
-                            <li class="nav-item" style="">
-                                <button
-                                    class="nav-link {activeTab === index ? 'active' : ''}"
-                                    on:click={() => setActiveTab(index)}
-                                >
-                                    {seller.name}
-                                </button>
-                            </li>
-                        {/each}
-                    </ul>
-        
-                    <!-- table  -->
-                    <div class="tab-content mt-10" style="margin-top: 100px;">
-                        {#if sortedData.length > 0}
-                        <span style="color:black">Team X1 Hôm nay</span>
-                            <div class="tab-pane fade show active">
-                                <table class="table-striped table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Image</th>
-                                            <th>Amount</th>
-                                            <th>Title</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {#each sortedData as product, index}
-                                            <tr>
-                                                <td><span>{index + 1}</span></td>
-                                                <td>
-                                                    <img
-                                                        src={product.image}
-                                                        alt="Product Image"
-                                                        style="width: 50px; height: 50px; object-fit: cover;"
-                                                    />
-                                                </td>
-                                                <td>{product.amount} đơn</td>
-                                                <td>{truncateTitle(product.title)}</td>
-                                            </tr>
-                                        {/each}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {/if}
-                    </div>
-                {/if}
-            </div></div>
-        </div>
+	<div class="d-flex">
+		<!-- left tab  -->
+		<div>
+			<div class="d-flex">
+				<!-- Legend -->
+				<div class="d-flex justify-content-center mb-5"><div class="text-center mt-5">
+					<h1 class="animated-text">Tổng {data?.data?.[0]?.totalSold}</h1>
+				  </div></div>
+				<div class="legend">
+					{#if data?.data?.[0]?.detail}
+						{#each data.data[0].detail as item, index}
+							<div class="legend-item">
+								<div class="color-box" style="background-color: {getColor(index)}"></div>
+								<span>{item.name}: {item.amountSold}</span>
+							</div>
+						{/each}
+					{:else}
+						<p>Loading...</p>
+					{/if}
+				</div>
+				<!-- Pie Chart -->
+				<div class="chart-container">
+					<canvas bind:this={chartCanvas}></canvas>
+				</div>
+			</div>
 
+			<!-- top sold today -->
+			<div class="row">
+				<div class="col-10 text-center text-white">
+					{#if data.data[0].detail?.length === 0}
+						<!-- Display a loading message if no data is provided -->
+						<div class="mt-5 text-center">
+							<p>Loading...</p>
+						</div>
+					{:else}
+						<ul class="nav nav-tabs d-flex" style="margin: 30px;">
+							{#each data.data[0].detail as seller, index}
+								<li class="nav-item" style="">
+									<button
+										class="nav-link {activeTab === index ? 'active' : ''}"
+										on:click={() => setActiveTab(index)}
+									>
+										{seller.name}
+									</button>
+								</li>
+							{/each}
+						</ul>
 
-        <!-- right tab  -->
-         <div>
-            <div class="container mt-4">
-                <h2 class="text-center m-2">Top Sold Products All Team (Last 30 Days)</h2>
-                <div class="table-responsive overflow-auto w-1000">
-                    <table class="table table-hover table-striped">
-                        <thead class="table-dark">
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Amount Sold</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {#each data.data[0].TopSold30days as product, index}
-                            <tr>
-                              <th scope="row">{index + 1}</th>
-                              <td>
-                                <img src={product.imageUrl} alt={product.title} class="img-fluid" style="max-width: 100px;" />
-                              </td>
-                              <td>{truncateTitle(product.title)}</td>
-                              <td>{product.amount}</td>
-                            </tr>
-                          {/each}
-                        </tbody>
-                      </table>
-                </div>
-                
-              </div>
-         </div>
-    </div>
-	
+						<!-- table  -->
+						<div class="tab-content mt-10" style="margin-top: 100px;">
+							{#if sortedData.length > 0}
+								<span style="color:black">Team X1 Hôm nay</span>
+								<div class="tab-pane fade show active">
+									<table class="table-striped table">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Image</th>
+												<th>Amount</th>
+												<th>Title</th>
+											</tr>
+										</thead>
+										<tbody>
+											{#each sortedData as product, index}
+												<tr>
+													<td><span>{index + 1}</span></td>
+													<td>
+														<img
+															src={product.image}
+															alt="Product Image"
+															style="width: 50px; height: 50px; object-fit: cover;"
+														/>
+													</td>
+													<td>{product.amount} đơn</td>
+													<td>{truncateTitle(product.title)}</td>
+												</tr>
+											{/each}
+										</tbody>
+									</table>
+								</div>
+							{/if}
+						</div>
+					{/if}
+				</div>
+			</div>
+		</div>
+
+		<!-- right tab  -->
+		<div>
+			<div class="container mt-4">
+				<h2 class="m-2 text-center">Top Sold Products All Team (Last 30 Days)</h2>
+				<div class="table-responsive w-1000 overflow-auto">
+					<table class="table-hover table-striped table">
+						<thead class="table-dark">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Image</th>
+								<th scope="col">Title</th>
+								<th scope="col">Amount Sold</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#if !data?.data?.[0]?.TopSold30days}
+								<div class="mt-5 text-center">
+									<div class="spinner-border" role="status">
+										<span class="visually-hidden">Loading...</span>
+									  </div>
+								</div>
+							{:else}
+								{#each data.data[0].TopSold30days as product, index}
+									<tr>
+										<th scope="row">{index + 1}</th>
+										<td>
+											<img
+												src={product.imageUrl}
+												alt={product.title}
+												class="img-fluid"
+												style="max-width: 100px;"
+											/>
+										</td>
+										<td>{truncateTitle(product.title)}</td>
+										<td>{product.amount}</td>
+									</tr>
+								{/each}
+							{/if}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <style>
@@ -281,6 +297,29 @@
 		gap: 1rem;
 		margin-bottom: 2rem;
 	}
+	@keyframes grow-shrink {
+  0% {
+    font-size: 1rem;
+  }
+  30%{
+	font-size: 1.05rem;
+  }
+
+  50% {
+    font-size: 1.04rem;
+  }
+  70%{
+	  font-size: 1.03rem;
+  }
+  100% {
+	font-size: 1.01rem;
+
+  }
+}
+
+.animated-text {
+  animation: grow-shrink 2s infinite ease-in-out;
+}
 
 	.legend-item {
 		display: flex;
@@ -306,8 +345,8 @@
 		max-width: 400px;
 		max-height: 400px;
 	}
-    .table img {
-    max-height: 100px;
-    object-fit: cover;
-  }
+	.table img {
+		max-height: 100px;
+		object-fit: cover;
+	}
 </style>

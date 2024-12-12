@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 	export { load } from './+page';
 </script>
-
 <script lang="ts">
 	import * as XLSX from 'xlsx';
 	let folderInput: HTMLInputElement | null = null;
@@ -32,10 +31,10 @@
 	let editingTitleIndex: number | null = null;
 	const updateTitle = (index: number, newValue: string) => {
         generateTitles.generatedTitles[index] = newValue;
-        editingTitleIndex = null; // Exit edit mode
+        editingTitleIndex = null; 
     };
 
-    // Function to cancel editing
+    
     const cancelEditTitle = () => {
         editingTitleIndex = null; // Exit edit mode without saving
     };
@@ -43,7 +42,7 @@
 		event.preventDefault();
 		console.log('Form Data Submitted:', formData);
 	};
-	// Filter options based on search input
+	
 	$: filteredOptions = options.filter((option) =>
 		option.toLowerCase().includes($searchQuery.toLowerCase())
 	);
@@ -51,7 +50,7 @@
 		(folderInput as HTMLInputElement).webkitdirectory = true;
 		(folderInput as HTMLInputElement).setAttribute('directory', '');
 	}
-	// Toggle dropdown visibility
+	
 	function toggleDropdown() {
 		isFileSelected = true;
 		dropdownOpen.update((state) => !state);

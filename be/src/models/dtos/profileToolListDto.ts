@@ -2,12 +2,12 @@ import { ObjectId } from "mongodb";
 
 export class profileToolListDto {
     _id=new ObjectId();
-    profileName:string ;
-    order:number; 
-    category: string;
-    folderPath: string;
-    tag:string
-    status:string
+    profileName:string ="";
+    order:number=1; 
+    category: string="";
+    folderPath: string="";
+    tag:string="default"
+    status:string="live"
     static createObj = (src?: Partial<profileToolListDto>): profileToolListDto => {
         const obj = new profileToolListDto();
         return {

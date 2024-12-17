@@ -11,7 +11,7 @@ import { addCreator } from "../../routes/creator/service/addCreator";
 //     followerCount: string;
 // }
 export interface ICreator2 {
-    // name: string;
+    avt:string;
     userName: string;
     revenue: string;
     itemSolds: string;
@@ -106,10 +106,10 @@ export const creatorShopPlus = async function (): Promise<void> {
                                 const videos = "";
                                 const AvgViews = "";
                                 const followerCount = "";
-                    
+                                const avt = ""
                                 console.log(userName, revenue, atv, products, videos, itemSolds, AvgViews, followerCount);
                                 return {
-                                    userName, revenue, atv, products, videos, itemSolds, AvgViews, followerCount
+                                    userName, revenue, atv, products, videos, itemSolds, AvgViews, followerCount,avt
                                 };
                             } catch (error) {
                                 console.error("Error processing row:", error);

@@ -3,7 +3,7 @@ const path = require('path');
 
 export const getDataExcel = async () => {
     // const filePath = path.join(__dirname, 'data.xlsx');
-    const filePath  = "C:/Users/KBT/Downloads/Tiktoksellercenter_batchedit_20241203_media_information_template.xlsx";
+    const filePath  = "C:/Users/KBT/Downloads/Tiktoksellercenter_batchedit_20241213_media_information_template.xlsx";
     const workbook = xlsx.readFile(filePath);
 
     // Select the first sheet

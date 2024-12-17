@@ -5,39 +5,8 @@ import { addOrIncrementBatchProfiles } from "../../routes/TikSuccess/service/inc
 import { updateStatus } from "../../routes/TikSuccess/service/updateStatus";
 import { generateSingleTitle } from "../../utils/genSingleTitle";
 import { getKeyWord } from "../../routes/keywordTitle/services/getKeyWord";
-const priorityProfile = [
-    "TIKTOKNEW42",
-    "TIKTOKNEW239",
-    "TIKTOKNEW225",
-    "TIKOK140",
-    "DP-TIKTOKNEW-103",
-    "DP-TIKTOKNEW-136",
-    "TIKTOKNEW463",
-    "DUYDUC_TIKTOKUS01",
-    "TIKTOKNEW556",
-    "TIKTOKNEW393",
-    "TIKTOKNEW418",
-    "TIKTOKNEW439",
-    "TIKTOKNEW480",
-    "TIKTOKNEW195",
-    "TIKTOKNEW521",
-    "TIKTOKNEW568",
-    "TIKTOKNEW509",
-    "TIKTOKNEW473",
-    "TIKTOKNEW1113",
-    "TIKTOKNEW1114",
-    "TIKTOKNEW1115",
-    "TIKTOKNEW1116",
-    "TIKTOKNEW1117",
-    "TIKTOKNEW1118",
-    "TIKTOKNEW1119",
-    "TIKTOKNEW1120",
-    "TIKTOKNEW1125",
-    "TIKTOKNEW1126",
-    "TIKTOKNEW274",
-    "TIKTOKNEW185",
-    "TIKTOKNEW167",
-]
+import { getKeyWordFromFile } from "../../routes/keywordTitle/services/getKeyWordFromFile";
+
 const randomMemePhases = [
     "Silly ",
     "Humor ",
@@ -57,17 +26,19 @@ const randomMemePhases = [
     "Impractical ",
     "Idiotic "
 ]
+import fs from 'fs/promises';
+import 'dotenv/config'
+const seller = process.env.seller;
 interface IProfile {
     _id: any,
     profileName: string,
     order: number,
     category: string,
-    filePath: string
+    folderPath: string
     tag: string,
     status:string
 }
 const basedPath = 'C:/code/X1Code/fe/static/warehouse'
-
 export const raisedAccountCore = async function (profiles: IProfile[]): Promise<void> {
     const browser = await chromium.launch({
         headless: false,
@@ -84,8 +55,9 @@ export const raisedAccountCore = async function (profiles: IProfile[]): Promise<
     await page.waitForLoadState("load");
     await page.waitForTimeout(2000);
     const profileTabs = profiles.map(async (item: IProfile, index: number) => {
-        const filePathFull = `${basedPath}/${item.filePath}`;
+        const filePathFull = `${basedPath}/${item.folderPath}`;
         const fileName = getFileNameByOrder(filePathFull, item.order);
+        console.log({fileName})
         const tab = await browserContext.newPage();
         await tab.goto(`https://apps.tiksuccess.com/ket-noi-shop-tiktok`);
         await tab.waitForLoadState("load");
@@ -134,19 +106,13 @@ export const raisedAccountCore = async function (profiles: IProfile[]): Promise<
         await tab.waitForTimeout(10000);
         await tab.click(`tbody tr:nth-child(2) span[title='Edit Listing']`);
         await tab.waitForTimeout(2000);
-        await tab.setInputFiles(`#images`, `C:/code/X1Code/fe/static/warehouse/${item.filePath}/${fileName}`);
+        await tab.setInputFiles(`#images`, `C:/code/X1Code/fe/static/warehouse/${item.folderPath}/${fileName}`);
         await tab.waitForTimeout(2000);
-        if(item.category == "meme"){
-            await tab.fill(`textarea#product_name`, randomMemePhases[Math.floor(Math.random() * randomMemePhases.length)] + " Tee " + fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim() + " " + randomMemePhases[Math.floor(Math.random() * randomMemePhases.length)]);
-        }
-        if(item.category == "anime"){
-            await tab.fill(`textarea#product_name`, "Graphic " + " Tee " + fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim() + " " + " Otaku");
-        }
-        if(item.category == "sport"){
-            const keywords :any= await getKeyWord("meme");
-            const title = await generateSingleTitle(fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim(),keywords.map((item:any)=>item.keyword));
-            await tab.fill(`textarea#product_name`, "Football " + " Tee " + title+ " " + " Sport");
-        }
+            const keywords :any= await getKeyWordFromFile(seller,item.category);
+            console.log({keywords})
+            const title = await generateSingleTitle(fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim(),keywords);
+            await tab.fill(`textarea#product_name`, title);
+        
         await tab.click(`tbody tr:nth-child(2) span b:has-text('Save')`);
         await tab.waitForLoadState("load");
         await tab.waitForTimeout(5000);

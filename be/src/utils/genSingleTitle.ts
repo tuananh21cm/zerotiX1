@@ -2,9 +2,11 @@ export function generateSingleTitle(
     keyword: string, 
     phrases: string[], 
     optionalKeys: string = "", 
-    minLength: number = 50, 
+    minLength: number = 70, 
     maxLength: number = 100
   ): string {
+    console.log({keyword})
+    console.log({phrases})
     // Clean up optionalKeys to ensure there's only one space between words
     const cleanOptionalKeys = optionalKeys.trim().replace(/\s+/g, ' ');
   

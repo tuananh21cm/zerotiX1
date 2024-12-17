@@ -18,6 +18,7 @@ import { keywordTitleRoute } from "./routes/keywordTitle/keywordTitle.route";
 import { warehouseRoute } from "./routes/warehouse/warehouse.route";
 import { profileToolListRoute } from "./routes/profileToolList/profile.route";
 import { clonePro5SystemRoute } from "./routes/clonePro5System/clonePro5System";
+import { crawlImageWebRoute } from "./routes/crawlImageWeb/crawlImageWeb.route";
 export const app = express();
 export const server = http.createServer(app);
 app.use(cors({
@@ -43,3 +44,4 @@ app.use("/warehouse",warehouseRoute);
 app.use("/profileToolList",profileToolListRoute);
 app.use("/clonePro5",clonePro5SystemRoute);
 app.use("/keyFollowShopPlus",clonePro5SystemRoute);
+app.use("/crawlImage",crawlImageWebRoute);

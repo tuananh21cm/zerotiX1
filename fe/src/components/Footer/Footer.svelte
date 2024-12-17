@@ -3,12 +3,14 @@
 
 <!-- <p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p> -->
 
-<footer>
+<footer class="fixed-bottom">
 	<!-- <img src={logo} height="58px" alt="zeroti logo" /> -->
-
-	<p>
-		👙
+	<p class="nameProfile ">
+		<img src="/header/fly.png" width="40" alt="">
 	</p>
+	<!-- <p class="nameProfile">
+		<img src="/header/dog.gif" width="50" alt="">
+	</p> -->
 </footer>
 
 <style>

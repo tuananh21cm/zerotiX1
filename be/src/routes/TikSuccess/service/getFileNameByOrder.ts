@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 export const getFileNameByOrder = (folderPath:string, order:number) => {
     try {
+        console.log({folderPath});
         const files = fs.readdirSync(folderPath);
         const filesWithStats = files.map((file:any) => {
             const filePath = path.join(folderPath, file);

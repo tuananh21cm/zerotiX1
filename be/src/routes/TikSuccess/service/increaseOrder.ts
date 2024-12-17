@@ -7,7 +7,7 @@ export interface IProfleToolList {
     profileName: string;
     order: number;
     category: string;
-    filePath: string;
+    folderPath: string;
     tag: string;
 }
 

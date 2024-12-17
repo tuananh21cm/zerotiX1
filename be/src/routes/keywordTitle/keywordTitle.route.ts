@@ -4,8 +4,8 @@ import { addKeywordsBatch, addKeyWordTitle } from "./services/keywordTitle";
 import { getKeyWord } from "./services/getKeyWord";
 import { getKeyWordFromFile } from "./services/getKeyWordFromFile";
 
-export const keywordTitleRoute = Router();
 
+export const keywordTitleRoute = Router();
 
 //add batch title
 keywordTitleRoute.post("/batch", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -33,10 +33,11 @@ keywordTitleRoute.get("/", async (req: Request, res: Response, next: NextFunctio
 //get title by File
 keywordTitleRoute.get("/file", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const filePath:string= "//172.16.0.30/kbt_global/KBT_Teamx1/Images/tikSuccess/tuananh/keys.txt"
-        const lisTitle = await getKeyWordFromFile(filePath);
-        console.log({lisTitle})
-        res.json(lisTitle);
+        const seller:string = req.query.seller as string;
+        const niche :string = req.query.niche as string;
+        // const filePath:string= "//172.16.0.30/kbt_global/KBT_Teamx1/Images/tikSuccess/tuananh/keys.txt"
+        const data = await getKeyWordFromFile(seller,niche);
+        res.json(data);
         next();
     } catch (error) {
         console.log(error);

@@ -8,8 +8,8 @@ interface IData {
   img:string
 }
 export const downloadImages = async (dataList:IData[]) => {
-  if (!fs.existsSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/game2")) {
-    fs.mkdirSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/game2");
+  if (!fs.existsSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/temp")) {
+    fs.mkdirSync("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/temp");
   }
 
   for (const item of dataList) {
@@ -17,7 +17,7 @@ export const downloadImages = async (dataList:IData[]) => {
       const { name, img } = item;
       const safeFileName = name + '.jpeg';
 
-      const filePath = path.join("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/game2", safeFileName);
+      const filePath = path.join("//172.16.0.30/kbt_global/KBT_Teamx1/Images/Tuan Anh/warehouse/temp", safeFileName);
 
       console.log(`Downloading: ${img}`);
       const response = await axios({

@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	export { load } from './+page';
 </script>
+
 <script lang="ts">
 	import * as XLSX from 'xlsx';
 	let folderInput: HTMLInputElement | null = null;
@@ -13,7 +14,7 @@
 	let numberAccount = 1;
 	let generateTitles: any = [];
 	export let data;
-	const keywords:any = data.data?.data;
+	let keywords: any;
 	let listName: any = [];
 	let editingIndex: any = null;
 	export let options: string[] = data.data?.data2.data.map(
@@ -28,21 +29,21 @@
 		category: 'meme',
 		folderPath: ''
 	};
+	let niche: any;
 	let editingTitleIndex: number | null = null;
 	const updateTitle = (index: number, newValue: string) => {
-        generateTitles.generatedTitles[index] = newValue;
-        editingTitleIndex = null; 
-    };
+		generateTitles.generatedTitles[index] = newValue;
+		editingTitleIndex = null;
+	};
 
-    
-    const cancelEditTitle = () => {
-        editingTitleIndex = null; // Exit edit mode without saving
-    };
+	const cancelEditTitle = () => {
+		editingTitleIndex = null; // Exit edit mode without saving
+	};
 	const handleSubmitAddProfile = (event: Event) => {
 		event.preventDefault();
 		console.log('Form Data Submitted:', formData);
 	};
-	
+
 	$: filteredOptions = options.filter((option) =>
 		option.toLowerCase().includes($searchQuery.toLowerCase())
 	);
@@ -50,11 +51,53 @@
 		(folderInput as HTMLInputElement).webkitdirectory = true;
 		(folderInput as HTMLInputElement).setAttribute('directory', '');
 	}
-	
+	function handleClickOutside(event: any) {
+		if (!event.target.closest('.dropdown-container')) {
+			dropdownOpen.set(false);
+		}
+	}
 	function toggleDropdown() {
 		isFileSelected = true;
 		dropdownOpen.update((state) => !state);
 	}
+	let seller: any;
+	let loadingKeywords = true;
+	onMount(async () => {
+		try {
+			// Access localStorage
+			const storedSeller = localStorage.getItem('seller');
+
+			let seller;
+			if (storedSeller) {
+				seller = JSON.parse(storedSeller);
+			} else {
+				// Default seller if not in localStorage
+				seller = {
+					id: 1,
+					name: 'tuananh',
+					niche: 'meme'
+				};
+				localStorage.setItem('seller', JSON.stringify(seller));
+			}
+			console.log('Using seller:', seller);
+			// Call API based on seller
+			const response = await fetch(
+				`http://localhost:3001/keywordTitle/file?seller=${seller.name}&niche=${seller.niche}`
+			);
+			if (!response.ok) {
+				throw new Error('Failed to fetch data');
+			}
+			const responseData = await response.json();
+			console.log('res : ', responseData);
+			keywords = responseData.key;
+			niche = responseData.niche;
+			console.log({ keywords });
+		} catch (error) {
+			console.error('Error calling API:', error);
+		} finally {
+			loadingKeywords = false; // Mark loading as complete
+		}
+	});
 	const exportToExcel = () => {
 		const data = generateTitles?.generatedTitles.map((item: any) => [item]);
 		const worksheet = XLSX.utils.aoa_to_sheet(data);
@@ -79,14 +122,7 @@
 			currentSelections.filter((selected) => selected !== option)
 		);
 	}
-	// onMount(() => {
-	// 	// console.log("hehe :",...data.data?.data)
-	// 	keywords.set([...data.data?.data]);
-	// 	console.log('ok');
-	// 	if (folderInput) {
-	// 		(folderInput as any).webkitdirectory = true;
-	// 	}
-	// });
+
 	const AddKeyword = async () => {
 		console.log(keyword);
 		try {
@@ -114,37 +150,46 @@
 	const newNames: Set<string> = new Set();
 	const filePaths: Set<string> = new Set();
 	const handleFolderSelection = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    try {
-        if (input.files) {
-            for (let i = 0; i < input.files.length; i++) {
-                const file = input.files[i];
-                if (file.name.includes('Thumbs')) continue;
-                const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
+		const input = event.target as HTMLInputElement;
+		try {
+			if (input.files) {
+				for (let i = 0; i < input.files.length; i++) {
+					const file = input.files[i];
+					if (file.name.includes('Thumbs')) continue;
+					const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
 
-                newNames.add(fileNameWithoutExtension);
-                filePaths.add(file.webkitRelativePath);
-		console.log("hhee :",filePaths)
+					newNames.add(fileNameWithoutExtension);
+					filePaths.add(file.webkitRelativePath);
+					console.log('hhee :', filePaths);
+				}
 
-            }
-
-            // Update the reactive variables
-            listName = [...listName, ...newNames];
-            console.log('Unique File Names Without Extension:', Array.from(newNames));
-            console.log('Unique File Paths:', Array.from(filePaths));
-        } else {
-            console.log('No files selected');
-        }
-
-    } catch (error) {
-        console.error('Error handling folder selection:', error);
-    }
-};
-
+				// Update the reactive variables
+				listName = [...listName, ...newNames];
+				console.log('Unique File Names Without Extension:', Array.from(newNames));
+				console.log('Unique File Paths:', Array.from(filePaths));
+			} else {
+				console.log('No files selected');
+			}
+		} catch (error) {
+			console.error('Error handling folder selection:', error);
+		}
+	};
 
 	const handleGenTitle = async () => {
-		console.log({ listName });
-		console.log({ numberAccount });
+		const storedSeller = localStorage.getItem('seller');
+		let seller;
+		if (storedSeller) {
+			seller = JSON.parse(storedSeller);
+		} else {
+			seller = {
+				id: 1,
+				name: 'tuananh',
+				niche: 'meme'
+			};
+			localStorage.setItem('seller', JSON.stringify(seller));
+		}
+		const sellerName = seller.name;
+		const niche = seller.niche;
 		const response = await fetch('http://localhost:3001/genTitle', {
 			method: 'POST',
 			headers: {
@@ -153,7 +198,9 @@
 			body: JSON.stringify({
 				fileName: 'folderPathInput',
 				listKeys: listName,
-				numberAccount: $selectedOptions.length
+				numberAccount: $selectedOptions.length,
+				seller:sellerName,
+				niche
 			})
 		});
 
@@ -172,7 +219,7 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			
+
 			body: JSON.stringify({
 				fileNames: generateTitles.generatedTitles,
 				filePaths,
@@ -203,45 +250,76 @@
 		// }
 	};
 	let profiles: string[] = [];
-	let isFileSelected = false
-	// export let options: string[] = data.data.data.map((entry: { profile: string }) => entry.profile);
+	let isFileSelected = false;
 
-	// let searchQuery = writable<string>('');
-	// let selectedOptions = writable<string[]>([]);
-	// let dropdownOpen = writable<boolean>(false);
-	// $: filteredOptions = options.filter((option) =>
-	// 	option.toLowerCase().includes($searchQuery.toLowerCase())
-	// );
+	function updateSellerNiche(newNiche: any) {
+		const storedSeller = localStorage.getItem('seller');
+		let seller;
+		if (storedSeller) {
+			seller = JSON.parse(storedSeller);
+			seller.niche = newNiche;
+			localStorage.setItem('seller', JSON.stringify(seller));
+		} else {
+			seller = {
+				id: 1,
+				name: 'tuananh',
+				niche: newNiche
+			};
+			localStorage.setItem('seller', JSON.stringify(seller));
+		}
+		return seller;
+	}
 
-	// // Toggle dropdown visibility
-	// function toggleDropdown() {
-	// 	dropdownOpen.update((state) => !state);
-	// }
+	async function fetchKeywords(niche: any) {
+		try {
+			if (!seller) {
+				const storedSeller = localStorage.getItem('seller');
+				seller = storedSeller
+					? JSON.parse(storedSeller)
+					: { id: 1, name: 'tuananh', niche: 'meme' };
+				if (!storedSeller) {
+					localStorage.setItem('seller', JSON.stringify(seller));
+				}
+			}
 
-	// // Toggle selection of an option
-	// function toggleOption(option: string) {
-	// 	selectedOptions.update((currentSelections) => {
-	// 		if (currentSelections.includes(option)) {
-	// 			return currentSelections.filter((selected) => selected !== option);
-	// 		} else {
-	// 			return [...currentSelections, option];
-	// 		}
-	// 	});
-	// }
+			// Update seller's niche for the API call
+			seller.niche = niche;
 
-	// // Remove an item from selected options
-	// function removeOption(option: string) {
-	// 	selectedOptions.update((currentSelections) =>
-	// 		currentSelections.filter((selected) => selected !== option)
-	// 	);
-	// }
+			const response = await fetch(
+				`http://localhost:3001/keywordTitle/file?seller=${seller.name}&niche=${seller.niche}`
+			);
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch data');
+			}
+
+			const responseData = await response.json();
+			keywords = responseData.key;
+
+			console.log('new niche ', niche);
+			console.log('Fetched Keywords:', keywords);
+		} catch (error) {
+			console.error('Error fetching keywords:', error);
+		} finally {
+			loadingKeywords = false;
+		}
+	}
+	async function handleNicheChange(event: any) {
+		const newNiche = event.target.value.toLowerCase(); // Get selected niche
+		console.log({ newNiche });
+		if (newNiche) {
+			loadingKeywords = true; // Set loading state
+			await fetchKeywords(newNiche); // Fetch keywords for the new niche
+			niche = newNiche;
+			updateSellerNiche(newNiche);
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>Auto Tik Success</title>
 	<meta name="description" content="Hello" />
 </svelte:head>
-
 <section>
 	<div>
 		<div class="d-flex justify-content-center">
@@ -273,15 +351,15 @@
 						<div class="modal-body">
 							<div class="d-flex flex-row-reverse">
 								<input
-											type="file"
-											on:change={handleFileChange}
-											class="form-control form-control-sm"
-											style="width: auto;"
-										/>
+									type="file"
+									on:change={handleFileChange}
+									class="form-control form-control-sm"
+									style="width: auto;"
+								/>
 							</div>
 							<div class="container mt-4">
 								<form on:submit={handleSubmitAddProfile} class="rounded border p-4 shadow">
-										<h3 class="mb-4 text-center">Profile Form</h3>
+									<h3 class="mb-4 text-center">Profile Form</h3>
 
 									<!-- Profile Name -->
 									<div class="mb-3">
@@ -348,7 +426,13 @@
 		</div>
 		<div class="d-flex justify-content-between">
 			<div>
-				<input type="file" bind:this={folderInput} on:change={handleFolderSelection}  multiple webkitdirectory/>
+				<input
+					type="file"
+					bind:this={folderInput}
+					on:change={handleFolderSelection}
+					multiple
+					webkitdirectory
+				/>
 			</div>
 			<button
 				type="button"
@@ -397,6 +481,9 @@
 
 			<!-- Selected Options -->
 			<div class="flex max-h-[60px] w-1/2 flex-wrap items-center gap-2 overflow-y-auto">
+				<div>
+					<span class="text-sm text-gray-500"><span class="badge bg-danger">{$selectedOptions.length}</span></span>
+				</div>
 				{#each $selectedOptions as option}
 					<div class="ml-50 flex items-center space-x-2 rounded bg-gray-200 px-3 py-1">
 						<span class="hover:text-red-700">{option}</span>
@@ -408,7 +495,7 @@
 				{/each}
 			</div>
 		</div>
-
+		<!--  -->
 		<div class="d-flex">
 			<div>
 				<div>
@@ -432,8 +519,11 @@
 						{/each}
 					</div>
 				</div>
-				<button type="button" class="btn btn-primary mt-5" on:click={handleGenTitle} disabled={!isFileSelected} 
-					>Preview Title</button
+				<button
+					type="button"
+					class="btn btn-primary mt-5"
+					on:click={handleGenTitle}
+					disabled={!isFileSelected}>Preview Title</button
 				>
 			</div>
 			<div class="d-flex m-5">
@@ -441,11 +531,11 @@
 					{#if generateTitles?.generatedTitles}
 						<div class="d-flex justify-content-center">
 							<button
-							on:click={exportToExcel}
-							class="btn btn-success d-flex align-items-center justify-content-center px-4 py-2 shadow-sm"
-						>
-							Export to Excel ⬇
-						</button>
+								on:click={exportToExcel}
+								class="btn btn-success d-flex align-items-center justify-content-center px-4 py-2 shadow-sm"
+							>
+								Export to Excel ⬇
+							</button>
 						</div>
 						<ul class="d-flex flex-column justify-start">
 							{#each generateTitles.generatedTitles as title, index}
@@ -457,7 +547,9 @@
 											class="w-100"
 											bind:value={generateTitles.generatedTitles[index]}
 											on:blur={() => updateTitle(index, generateTitles.generatedTitles[index])}
-											on:keydown={(e) => e.key === 'Enter' && updateTitle(index, generateTitles.generatedTitles[index])}
+											on:keydown={(e) =>
+												e.key === 'Enter' &&
+												updateTitle(index, generateTitles.generatedTitles[index])}
 											on:keydown={(e) => e.key === 'Escape' && cancelEditTitle()}
 										/>
 									{:else}
@@ -471,7 +563,7 @@
 						</ul>
 					{:else}
 						<div>
-							<span>..</span>
+							<span>💩</span>
 						</div>
 					{/if}
 				</div>
@@ -489,7 +581,23 @@
 					<div class="modal-dialog modal-dialog-scrollable">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="staticBackdropLabel">List Keys</h5>
+								<div class="w-70 d-flex">
+									{#if loadingKeywords}
+										<p>loading</p>
+									{:else}
+										<p><span class="badge bg-primary fs-4 mr-2">{niche}</span></p>
+									{/if}
+									<select
+										class="form-select"
+										aria-label="Default select example"
+										on:change={handleNicheChange}
+									>
+										<option disabled selected>Choose another Niche</option>
+										<option value="meme">meme</option>
+										<option value="sport">sport</option>
+										<option value="anime">anime</option>
+									</select>
+								</div>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
 								></button>
 							</div>
@@ -511,14 +619,18 @@
 									>
 								</div> -->
 								<div>
-									{#each keywords as keyword}
-										<div class="keyword">
-											<div class="d-flex justify-content-between">
-												<p>{keyword}</p>
-												<!-- <button>❌</button> -->
+									{#if loadingKeywords}
+										<p>loading</p>
+									{:else}
+										{#each keywords as keyword}
+											<div class="keyword">
+												<div class="d-flex justify-content-between">
+													<p>{keyword}</p>
+													<!-- <button>❌</button> -->
+												</div>
 											</div>
-										</div>
-									{/each}
+										{/each}
+									{/if}
 								</div>
 							</div>
 						</div>
@@ -533,6 +645,7 @@
 				<div></div>
 			{/if}
 		</div>
+		<!--  -->
 	</div>
 </section>
 

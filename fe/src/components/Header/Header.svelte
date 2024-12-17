@@ -48,12 +48,15 @@
 			<li aria-current={$page.url.pathname.startsWith('/Warehouse') ? 'page' : undefined}>
 				<a href="/Warehouse"> Warehouse</a>
 			</li>
+			<li aria-current={$page.url.pathname.startsWith('/CrawlImageSite') ? 'page' : undefined}>
+				<a href="/CrawlImageSite"> Crawl</a>
+			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
 		</svg>
 	</nav>
 	<div >
-		<p class="nameProfile">X1</p>
+		.
 	</div>
 </header>

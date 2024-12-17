@@ -4,6 +4,7 @@ import { downloadImages } from "./service/downloadImg";
 import { getImageUrls } from "./service/getImgUrl";
 export const warehouseRoute = Router();
 import { promises as fs } from "fs";
+import { rewriteAndUpdatePrices } from "./service/updatePrice";
 const readJsonFile = async (filePath: string): Promise<any[]> => {
     try {
         // Read the file content
@@ -57,6 +58,16 @@ warehouseRoute.post("/", async (req, res, next): Promise<void> => {
         const listData = await getDataExcel();
         downloadImages(listData);
         next();
+    } catch (e) {
+        console.error(e);
+        next();
+    }
+});
+warehouseRoute.put("/updatePrice", async (req, res, next): Promise<void> => {
+    try {
+        console.log("req.body");
+        rewriteAndUpdatePrices("C:/Users/KBT/Downloads/108.xlsx");
+        next()
     } catch (e) {
         console.error(e);
         next();

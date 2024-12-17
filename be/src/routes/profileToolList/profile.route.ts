@@ -21,7 +21,8 @@ profileToolListRoute.post("/batch", async (req, res, next): Promise<void> => {
 profileToolListRoute.post("/", async (req, res, next): Promise<void> => {
     try {
         console.log(req.body);
-        addProfile(req.body.data)
+        const newpro5 = addProfile(req.body.data)
+        res.json(newpro5)
         next();
     } catch (e) {
         console.error(e);

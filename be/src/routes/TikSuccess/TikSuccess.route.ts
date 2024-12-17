@@ -29,7 +29,7 @@ TikSuccessRoute.get("/interval", async (req: Request, res: Response, next: NextF
 TikSuccessRoute.post("/raised", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         console.log(req.body);
-        // raisedAccount()
+        raisedAccount()
         // getFileByOrder("C:/code/X1Code/fe/static/warehouse/meme1",3);
         next();
     } catch (error) {

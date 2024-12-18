@@ -110,7 +110,7 @@ export const raisedAccountCore = async function (profiles: IProfile[]): Promise<
         await tab.waitForTimeout(2000);
             const keywords :any= await getKeyWordFromFile(seller,item.category);
             console.log({keywords})
-            const title = await generateSingleTitle(fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim(),keywords);
+            const title = await generateSingleTitle(fileName.replace(/\.(jpeg|jpg|png)$/i, "").trim(),keywords.key);
             await tab.fill(`textarea#product_name`, title);
         
         await tab.click(`tbody tr:nth-child(2) span b:has-text('Save')`);
